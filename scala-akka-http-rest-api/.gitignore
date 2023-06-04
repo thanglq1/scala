@@ -1,0 +1,11 @@
+*.iml
+*.ipr
+*.iws
+.idea/
+target/
+target
+*.log
+.DS_Store
+.sbtserver/
+shaded/
+.bsp/
