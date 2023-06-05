@@ -15,6 +15,7 @@ import scala.util.{Failure, Success}
 
 object UserRoute extends StrictLogging with CirceJsonSupport {
   private val userService = new UserService()
+  private val pathPrefix = "users"
 
   def routes: Route = createUserRoute ~
     getUsersRoute ~
@@ -22,7 +23,7 @@ object UserRoute extends StrictLogging with CirceJsonSupport {
     updateUserByIdRoute ~
     deleteUserByIdRoute
 
-  private def createUserRoute: Route = path("users") {
+  private def createUserRoute: Route = path(pathPrefix) {
     post {
       entity(as[User]) { user =>
         logger.info(s"Create user with user:::${user.asJson}")
@@ -31,7 +32,7 @@ object UserRoute extends StrictLogging with CirceJsonSupport {
     }
   }
 
-  private def getUsersRoute: Route = path("users") {
+  private def getUsersRoute: Route = path(pathPrefix) {
     get {
       onComplete(userService.getUsers) {
         case Failure(exception) => complete(StatusCodes.InternalServerError)
@@ -40,7 +41,7 @@ object UserRoute extends StrictLogging with CirceJsonSupport {
     }
   }
 
-  private def getUserByIdRoute: Route = path("users" / JavaUUID) { userId =>
+  private def getUserByIdRoute: Route = path(pathPrefix / JavaUUID) { userId =>
     get {
       logger.info(s"Get user with userID::: $userId")
       onComplete(userService.getUserById(userId)) {
@@ -50,7 +51,7 @@ object UserRoute extends StrictLogging with CirceJsonSupport {
     }
   }
 
-  private def updateUserByIdRoute: Route = path("users" / JavaUUID) { userId =>
+  private def updateUserByIdRoute: Route = path(pathPrefix / JavaUUID) { userId =>
     get {
       logger.info(s"Update user with userId::: $userId")
 
@@ -58,7 +59,7 @@ object UserRoute extends StrictLogging with CirceJsonSupport {
     }
   }
 
-  private def deleteUserByIdRoute: Route = path("users" / JavaUUID) { userId =>
+  private def deleteUserByIdRoute: Route = path(pathPrefix / JavaUUID) { userId =>
     delete {
       logger.info(s"Delete user with userId::: $userId")
       complete(s"Delete user with $userId successfully")
