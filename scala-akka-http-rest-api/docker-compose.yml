@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  scala_http_rest_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scala_http_rest_api
+    ports:
+      - "3366:3366"
+    # docker run -i
+#    stdin_open: true
+    # docker run -t
+#    tty: true
+    volumes:
+      - .:/usr/app
+    environment:
+      - SERVER_HOST=0.0.0.0
